@@ -14,7 +14,7 @@ export const Sidebar = () => {
 	console.log(session);
 
 	return (
-		<div className="p-5 text-sm text-gray-500 border-r border-gray-900">
+		<div className="h-screen p-5 overflow-y-scroll text-sm text-gray-500 border-r border-gray-900 scrollbar-hide">
 			<div className="space-y-4">
 				<button
 					className="flex items-center space-x-2 transition duration-150 hover:text-white"

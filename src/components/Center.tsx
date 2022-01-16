@@ -28,7 +28,7 @@ export const Center = () => {
 	const [
 		playlist,
 		setPlaylist,
-	] = useRecoilState<SpotifyApi.SinglePlaylistResponse | null>(playlistState);
+	] = useRecoilState<SpotifyApi.SinglePlaylistResponse>(playlistState);
 
 	useEffect(() => {
 		setColor(shuffle(colors).pop() ?? INITIAL_COLOR);
@@ -71,7 +71,7 @@ export const Center = () => {
 			<section
 				className={`flex items-end p-8 text-white space-x-7 bg-gradient-to-b to-black ${color} h-80`}
 			>
-				{playlist?.images[0].url ? (
+				{Object.keys(playlist).length > 0 ? (
 					<div className="shadow-2xl w-max h-max">
 						<Image
 							className="bg-center bg-no-repeat bg-cover"

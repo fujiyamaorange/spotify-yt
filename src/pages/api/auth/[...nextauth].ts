@@ -102,7 +102,7 @@ export default NextAuth({
 	// https://next-auth.js.org/configuration/options#jwt
 	jwt: {
 		// A secret to use for key generation (you should set this explicitly)
-		secret: process.env.SECRET,
+		secret: process.env.JWT_SECRET,
 		// Set to true to use encryption (default: false)
 		// encryption: true,
 		// You can define your own encode/decode functions for signing and encryption
@@ -138,7 +138,7 @@ export default NextAuth({
 					refreshToken: account.refresh_token,
 					username: account.providerAccountId,
 					accessTokenExpires: account.expires_at ?? 0 * 1000, // milliseconds
-				} as InitialToken;
+				};
 			}
 
 			// TODO: return previous token if the access token has not expired yet
@@ -162,14 +162,16 @@ export default NextAuth({
 		async session({ session, user, token }) {
 			// サンプルとは違う実装
 			session.user = user;
+			return {
+				...session,
+				user: token,
+			};
 
 			/**
 			 * session.user.accessToken = token.accessToken
 			 * session.user.refreshToken = token.refreshToken
 			 * session.user.username = token.username
 			 */
-
-			return session;
 		},
 		/**
 		 *  async signIn({ user, account, profile, email, credentials }) { return true },

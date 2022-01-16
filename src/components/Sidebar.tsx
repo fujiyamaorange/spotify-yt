@@ -6,11 +6,22 @@ import {
 	HeartIcon,
 	RssIcon,
 } from "@heroicons/react/outline";
+import { signOut, useSession } from "next-auth/react";
 
 export const Sidebar = () => {
+	const { data: session, status } = useSession();
+
+	console.log(session);
+
 	return (
 		<div className="p-5 text-sm text-gray-500 border-r border-gray-900">
 			<div className="space-y-4">
+				<button
+					className="flex items-center space-x-2 transition duration-150 hover:text-white"
+					onClick={() => signOut()}
+				>
+					<p>Logout</p>
+				</button>
 				<button className="flex items-center space-x-2 transition duration-150 hover:text-white">
 					<HomeIcon className="w-5 h-5" />
 					<p>Home</p>

@@ -4,6 +4,20 @@ import SpotifyProvider from "next-auth/providers/spotify";
 import spotifyApi, { LOGIN_URL } from "@/lib/spotify";
 import { JWT } from "next-auth/jwt";
 
+type TOKEN = {
+	name: string;
+	email: string;
+	sub: string;
+	accessToken: string;
+	refreshToken: string;
+	username: string;
+	accessTokenExpires: number;
+	iat: number;
+	exp: number;
+	jti: string;
+	error: string;
+};
+
 type InitialToken = {
 	token: JWT;
 	user?: User | undefined;
@@ -16,14 +30,10 @@ type InitialToken = {
 	accessTokenExpires: number;
 };
 
-const refreshAccessToken = async (
-	token: JWT,
-	accessToken: string,
-	refreshToken: string
-) => {
+const refreshAccessToken = async (token: TOKEN) => {
 	try {
-		spotifyApi.setAccessToken(accessToken);
-		spotifyApi.setRefreshToken(refreshToken);
+		spotifyApi.setAccessToken(token.accessToken);
+		spotifyApi.setRefreshToken(token.refreshToken);
 
 		const { body: refreshedToken } = await spotifyApi.refreshAccessToken();
 		console.log("REFRESHED TOKEN IS", refreshedToken);
@@ -32,7 +42,7 @@ const refreshAccessToken = async (
 			...token,
 			accessToken: refreshedToken.access_token,
 			accessTokenExpires: Date.now() + refreshedToken.expires_in * 1000,
-			refreshToken: refreshedToken.refresh_token ?? refreshToken,
+			refreshToken: refreshedToken.refresh_token ?? token.refreshToken,
 		};
 	} catch (e) {
 		console.log(e);
@@ -130,6 +140,15 @@ export default NextAuth({
 	// https://next-auth.js.org/configuration/callbacks
 	callbacks: {
 		async jwt({ token, user, account }) {
+			const localToken: TOKEN = token as any;
+			// console.log("JWT");
+			// console.log("TOKEN");
+			// console.log(token);
+			// console.log("USER");
+			// console.log(user);
+			// console.log("ACCOUNT");
+			// console.log(account);
+
 			//initial sign in
 			if (account && user) {
 				return {
@@ -142,21 +161,14 @@ export default NextAuth({
 			}
 
 			// TODO: return previous token if the access token has not expired yet
-			// サンプルにあるのとは違う→token.accessTokenExpiresは上で設定したやつ
-			if (account && account.expires_at) {
-				if (Date.now() < account.expires_at * 1000) {
-					console.log("EXISTING ACCESS TOKEN IS VALID");
-					return token;
-				}
+			if (Date.now() < localToken.accessTokenExpires) {
+				console.log("EXISTING ACCESS TOKEN IS VALID");
+				return localToken ?? token;
 			}
 
 			// Access token has expired, so we need to refresh it...
 			console.log("ACCESS TOKEN HAS EXPIRED, REFRESHING...");
-			return await refreshAccessToken(
-				token,
-				account?.access_token ?? "",
-				account?.refresh_token ?? ""
-			);
+			return await refreshAccessToken(localToken);
 		},
 
 		async session({ session, user, token }) {

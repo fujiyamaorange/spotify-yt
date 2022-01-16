@@ -4,7 +4,7 @@ import SpotifyProvider from "next-auth/providers/spotify";
 import spotifyApi, { LOGIN_URL } from "@/lib/spotify";
 import { JWT } from "next-auth/jwt";
 
-type TOKEN = {
+export type TOKEN = {
 	name: string;
 	email: string;
 	sub: string;
@@ -15,7 +15,7 @@ type TOKEN = {
 	iat: number;
 	exp: number;
 	jti: string;
-	error: string;
+	error?: string;
 };
 
 type InitialToken = {

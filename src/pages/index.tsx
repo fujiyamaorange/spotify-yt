@@ -1,7 +1,8 @@
-import { Sidebar } from '../components/Sidebar'
-import { Center } from '@/components/Center'
-import { getSession } from 'next-auth/react'
 import { GetServerSideProps } from 'next'
+import { getSession } from 'next-auth/react'
+
+import { Sidebar } from '@/components/Sidebar'
+import { Center } from '@/components/Center'
 import { Player } from '@/components/Player'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

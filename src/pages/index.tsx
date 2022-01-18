@@ -21,7 +21,7 @@ export default function Home() {
         <Sidebar />
         <Center />
 
-        <div className="sticky bottom-0">
+        <div className="fixed bottom-0 w-screen">
           <Player />
         </div>
       </main>

@@ -21,7 +21,8 @@ export const Song: React.VFC<Props> = ({ track, order }) => {
     if (!currentTrackIdState) return
     setCurrentTrackId(track.id)
     setIsPlaying(true)
-    spotifyApi.play({ uris: [track.uri] })
+    console.error('プレミアムでなと再生できません')
+    // spotifyApi.play({ uris: [track.uri] })
   }
 
   return (

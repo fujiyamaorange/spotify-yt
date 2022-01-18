@@ -6,6 +6,7 @@ import { Center } from '@/components/Center'
 import { Player } from '@/components/Player'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // This is for first rendering
   const session = await getSession(context)
 
   return {

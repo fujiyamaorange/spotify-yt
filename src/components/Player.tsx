@@ -12,15 +12,15 @@ import {
   VolumeOffIcon,
   VolumeUpIcon,
 } from '@heroicons/react/outline'
+import { debounce } from 'lodash'
 
 import { useSpotify } from '@/hooks/useSpotify'
 import { currentTrackIdState, isPlayingState } from '@/atoms/songsAtom'
 import { useSongInfo } from '@/hooks/useSongsInfo'
-import { debounce } from 'lodash'
 
 export const Player: React.VFC = () => {
   const spotifyApi = useSpotify()
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
 
   const [currentTrackId, setCurrentTrackId] = useRecoilState(
     currentTrackIdState

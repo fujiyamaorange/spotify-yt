@@ -6,20 +6,21 @@ import {
   HeartIcon,
   RssIcon,
 } from '@heroicons/react/outline'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
+import { useSetRecoilState } from 'recoil'
 
 import { useSpotify } from '@/hooks/useSpotify'
-import { useRecoilState } from 'recoil'
 import { playlistIdState } from '@/atoms/playlistAtom'
 
 export const Sidebar = () => {
   const spotifyApi = useSpotify()
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
+
   const [playlists, setPlaylists] = useState<
     SpotifyApi.PlaylistObjectSimplified[]
   >([])
-  const [playlistId, setPlaylistId] = useRecoilState(playlistIdState)
+  const setPlaylistId = useSetRecoilState(playlistIdState)
 
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
@@ -62,7 +63,6 @@ export const Sidebar = () => {
 
         <hr className="border-t-[0.1px] border-gray-900" />
 
-        {/* Playlist→now I use New Release */}
         {playlists.map((playlist) => {
           return (
             <p

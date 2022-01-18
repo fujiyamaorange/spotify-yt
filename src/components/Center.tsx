@@ -32,12 +32,9 @@ export const Center = () => {
 
   useEffect(() => {
     setColor(shuffle(colors).pop() ?? INITIAL_COLOR)
-
-    // playlistが変わるたびに色を変更する
   }, [playlistId])
 
   useEffect(() => {
-    // if (!session?.user) return;
     spotifyApi
       .getPlaylist(playlistId)
       .then((data) => {
@@ -95,9 +92,7 @@ export const Center = () => {
         </div>
       </section>
 
-      <div>
-        <Songs />
-      </div>
+      <Songs />
     </div>
   )
 }

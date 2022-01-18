@@ -1,7 +1,6 @@
 import Image from 'next/image'
-import { useRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 
-import { useSpotify } from '@/hooks/useSpotify'
 import { millisToMinutesAndSeconds } from '@/lib/time'
 import { currentTrackIdState, isPlayingState } from '@/atoms/songsAtom'
 
@@ -11,17 +10,14 @@ type Props = {
 }
 
 export const Song: React.VFC<Props> = ({ track, order }) => {
-  const spotifyApi = useSpotify()
-  const [currentTrackId, setCurrentTrackId] = useRecoilState(
-    currentTrackIdState
-  )
-  const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState)
+  const setCurrentTrackId = useSetRecoilState(currentTrackIdState)
+  const setIsPlaying = useSetRecoilState(isPlayingState)
 
   const playSong = () => {
     if (!currentTrackIdState) return
     setCurrentTrackId(track.id)
     setIsPlaying(true)
-    console.error('プレミアムでなと再生できません')
+    console.error('プレミアムでないと再生できません')
     // spotifyApi.play({ uris: [track.uri] })
   }
 

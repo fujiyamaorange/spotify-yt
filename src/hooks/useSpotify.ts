@@ -1,22 +1,22 @@
-import { useSession, signIn } from "next-auth/react";
-import { useEffect } from "react";
+import { useSession, signIn } from 'next-auth/react';
+import { useEffect } from 'react';
 
-import spotifyApi from "@/lib/spotify";
-import { TOKEN } from "@/pages/api/auth/[...nextauth]";
+import { TOKEN } from '@/pages/api/auth/[...nextauth]';
+import spotifyApi from '@/lib/spotify';
 
 export const useSpotify = () => {
-	const { data: session, status } = useSession();
+	const { data: session } = useSession();
 	const localUser = session?.user as TOKEN;
 
 	useEffect(() => {
 		if (session) {
-			if (session.error === "RefreshAccessTokenError") {
+			if (session.error === 'RefreshAccessTokenError') {
 				signIn();
 			}
 
 			spotifyApi.setAccessToken(localUser.accessToken);
 		}
-	}, [session]);
+	}, [localUser.accessToken, session]);
 
 	return spotifyApi;
 };

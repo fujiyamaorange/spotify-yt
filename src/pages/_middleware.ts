@@ -23,7 +23,7 @@ export async function middleware(req: NextRequest) {
 
   // redirect them to login page if they dont have token & are requesting a protected route
   if (!token && pathname !== '/login') {
-    // ログインページに返す
+    // ログインページに返す
     return NextResponse.redirect('/login')
   }
 }

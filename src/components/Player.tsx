@@ -22,9 +22,8 @@ export const Player: React.VFC = () => {
   const spotifyApi = useSpotify()
   const { data: session } = useSession()
 
-  const [currentTrackId, setCurrentTrackId] = useRecoilState(
-    currentTrackIdState
-  )
+  const [currentTrackId, setCurrentTrackId] =
+    useRecoilState(currentTrackIdState)
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState)
   const [volume, setVolume] = useState(50)
 
@@ -45,7 +44,7 @@ export const Player: React.VFC = () => {
 
   const handlePlayPause = () => {
     //
-    spotifyApi.getMyCurrentPlaybackState().then((data) => {
+    spotifyApi.getMyCurrentPlaybackState().then(() => {
       // dummy function
       if (isPlaying) {
         console.log('音楽を停止します')
@@ -79,6 +78,7 @@ export const Player: React.VFC = () => {
     }
   }, [volume])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedAdjustVolume = useCallback(
     // debounce
     debounce((volume) => {

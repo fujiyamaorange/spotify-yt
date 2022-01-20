@@ -25,10 +25,8 @@ export const Center = () => {
   const { data: session } = useSession()
   const [color, setColor] = useState(INITIAL_COLOR)
   const playlistId = useRecoilValue(playlistIdState)
-  const [
-    playlist,
-    setPlaylist,
-  ] = useRecoilState<SpotifyApi.SinglePlaylistResponse>(playlistState)
+  const [playlist, setPlaylist] =
+    useRecoilState<SpotifyApi.SinglePlaylistResponse>(playlistState)
 
   useEffect(() => {
     setColor(shuffle(colors).pop() ?? INITIAL_COLOR)
